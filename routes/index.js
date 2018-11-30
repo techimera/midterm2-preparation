@@ -1,49 +1,54 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var Comment = mongoose.model('Comment');
+var Item = mongoose.model('Item');
 
-router.get('/comments', function(req, res, next) {
+//do get one
+router.get('/items', function(req, res, next) {
   console.log("In Get Route");
-  Comment.find(function(err, comments){
+  Item.find(function(err, items){
     if(err){ return next(err); }
-    res.json(comments);
+    res.json(items);
   });
 });
-router.post('/comments', function(req, res, next) {
+
+//do post one
+router.post('/items', function(req, res, next) {
   console.log("In Post Route");
   console.log(req);
-  var comment = new Comment(req.body);
-  comment.save(function(err, comment){
+  var item = new Item(req.body);
+  item.save(function(err, item){
     if(err){ return next(err); }
-    console.log(comment);
-    res.json(comment);
+    console.log(item);
+    res.json(item);
   });
 });
 
-router.param('comment', function(req, res, next, id) {
-  Comment.findById(id, function (err, comment){
+router.param('item', function(req, res, next, id) {
+  Item.findById(id, function (err, item){
     if (err) { return next(err); }
-    if (!comment) { return next(new Error("can't find comment")); }
-    req.comment = comment;
+    if (!item) { return next(new Error("can't find comment")); }
+    req.item = item;
     return next();
   });
 });
 
-router.get('/comments/:comment', function(req, res) {
-  res.json(req.comment);
+router.get('/items/:item', function(req, res) {
+  res.json(req.item);
 });
 
-router.put('/comments/:comment/upvote', function(req, res, next) {
-  req.comment.upvote(function(err, comment){
+router.put('/items/:item/upvote', function(req, res, next) {
+  req.item.upvote(function(err, item){
     if (err) { return next(err); }
-    res.json(comment);
+    res.json(item);
   });
 });
 
-router.delete('/comments/:comment', function(req, res) {
+//do delete
+router.delete('/items/:item', function(req, res) {
   console.log("in Delete");
-  req.comment.remove();
+  console.log(req.candidate);
+  req.item.remove();
   res.sendStatus(200);
 });
 

@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>Voting</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./stylesheets/style.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="javascripts/vote.js"></script>
+
+</head>
+
+<body ng-app="items" ng-controller="MainCtrl">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <h1>Vote Admin</h1>
+            </div>
+            <h2>Candidate UI</h2>
+            <form ng-submit="addItem()" style="margin-top30px;">
+                <input type="text" ng-model="candidateName" placeholder="Name"></input>
+                <input type="text" ng-model="candidateInfo" placeholder="info"></input>
+                <input type="text" ng-model="candidatePicture"placeholder="IMG url"></input>
+                <button type="submit">Add Candidate</button>
+            </form>
+            
+            <h2> Current Cnadidates</h2>
+            
+            <div ng-repeat="candidate in candidates | orderBy: '-upvotes'">
+                <span class="glyphicon glyphicon-remove" ng-click="delete(candidate)"></span>
+                <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(candidate)"></span> 
+                <img src='{{candidate.url}}'> {{candidate.name}}: {{candidate.info}} - upvotes: {{candidate.upvotes}}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
